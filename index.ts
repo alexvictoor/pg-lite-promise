@@ -23,9 +23,10 @@ const buildPgLiteAdapter = (db: PGlite, queryLatency?: number): unknown => {
                 
                 callback(null, this, () => {});
                 return null;
-            } else {
-                return Promise.resolve(this);
-            }
+            } 
+            
+            return Promise.resolve(this);
+            
         }
 
         public async query(query: string, valuesOrCallback: unknown, callbackParam: unknown): Promise<unknown> {
@@ -41,21 +42,18 @@ const buildPgLiteAdapter = (db: PGlite, queryLatency?: number): unknown => {
 
             try {
                 const result = await db.exec(query);
-
                 if (callback) {
-                    // setTimeout(() => callback(null, result), 0);
                     callback(null, result);
                     return null;
-                } else {
-                    return await new Promise(res => res(0));
                 }
+                return await new Promise(res => res(0));
+                
             } catch (e) {
                 if (callback) {
                     setTimeout(() => callback(e), 0);
                     return null;
-                } else {
-                    return new Promise((_, reject) => reject(e));
-                }
+                } 
+                return new Promise((_, reject) => reject(e));
             }
         }
     }
@@ -67,7 +65,7 @@ const buildPgLiteAdapter = (db: PGlite, queryLatency?: number): unknown => {
 
 
 let count = 0;
-export function buildPgLitePromiseClient(db: PGlite, options: pgPromise.IInitOptions & { queryLatency?: number } = {}): IDatabase<unknown>  & { end: () => void } {
+export function buildPgLitePromiseClient(db: PGlite, options: pgPromise.IInitOptions & { queryLatency?: number } = {}): IDatabase<unknown> {
     const { queryLatency, ...pgInitOptions } = options;
     const pgp = pgPromise(pgInitOptions);
 
@@ -75,5 +73,5 @@ export function buildPgLitePromiseClient(db: PGlite, options: pgPromise.IInitOpt
 
     const pgDatabase = pgp('pg-lite-ftw #' + count++);
 
-    return pgDatabase as IDatabase<unknown>  & { end: () => void };
+    return pgDatabase;
 }

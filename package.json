@@ -2,8 +2,9 @@
   "name": "pg-lite-promise",
   "version": "1.0.0",
   "description": "Adapter for pg-lite & pg-promise",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
+    "build": "tsc --build tsconfig.json",
     "test": "vitest"
   },
   "repository": {
@@ -25,6 +26,7 @@
     "pg-promise": "^11.13.0"
   },
   "devDependencies": {
+    "@types/node": "^22.15.29",
     "typescript": "^5.8.3",
     "vitest": "^3.1.4"
   }
